@@ -1,0 +1,21 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Validate Firefox policy JSON
+        run: python3 -m json.tool firefox/policies.json >/dev/null
+      - name: Validate browser prototype
+        run: bash tests/check-browser.sh
+      - name: Check shell syntax
+        run: bash -n tests/check-browser.sh
