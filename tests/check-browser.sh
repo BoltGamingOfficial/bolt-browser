@@ -5,7 +5,9 @@ POLICIES="$ROOT_DIR/firefox/policies.json"
 STARTPAGE="$ROOT_DIR/startpage/index.html"
 PKGBUILD="$ROOT_DIR/PKGBUILD"
 POLICY_HELPER="$ROOT_DIR/packaging/enable-firefox-policy.sh"
-for file in "$POLICIES" "$STARTPAGE" "$PKGBUILD" "$POLICY_HELPER"; do
+WINDOWS_LAUNCHER="$ROOT_DIR/windows/launch-bolt-browser.ps1"
+WINDOWS_README="$ROOT_DIR/windows/README.md"
+for file in "$POLICIES" "$STARTPAGE" "$PKGBUILD" "$POLICY_HELPER" "$WINDOWS_LAUNCHER" "$WINDOWS_README"; do
   if [[ ! -s "$file" ]]; then printf 'Missing or empty BOLT Browser file: %s\n' "$file" >&2; exit 1; fi
 done
 python3 - "$POLICIES" "$PKGBUILD" <<'PY'
@@ -30,5 +32,7 @@ grep -Fq 'name="q"' "$STARTPAGE"
 grep -Fq 'https://github.com/BoltGamingOfficial/bolt-os' "$STARTPAGE"
 grep -Fq 'https://store.steampowered.com/' "$STARTPAGE"
 grep -Fq 'Merge BOLT Browser policies into a Firefox policies file after confirmation.' "$POLICY_HELPER"
+grep -Fq 'Start-Process -FilePath $firefox' "$WINDOWS_LAUNCHER"
+grep -Fq 'does not' "$WINDOWS_README"
 bash -n "$POLICY_HELPER"
 printf 'BOLT Browser static checks passed.\n'
