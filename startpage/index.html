@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#101010">
+  <title>BOLT Browser</title>
+  <style>
+    :root { color-scheme: dark; --gold: #f2c230; --panel: #1b1b1b; --muted: #b8b8b8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 2rem; background: #101010; color: #f5f5f5; font: 16px/1.5 system-ui, sans-serif; }
+    main { width: min(100%, 680px); text-align: center; }
+    .bolt { color: var(--gold); font-size: 3.5rem; line-height: 1; }
+    h1 { margin: .6rem 0 0; letter-spacing: .1em; }
+    p { color: var(--muted); }
+    form { display: flex; gap: .5rem; margin: 2rem 0; }
+    input { flex: 1; min-width: 0; padding: .9rem 1rem; border: 1px solid #444; border-radius: .6rem; background: var(--panel); color: inherit; font: inherit; }
+    input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    button { padding: .9rem 1.1rem; border: 0; border-radius: .6rem; background: var(--gold); color: #171717; font: inherit; font-weight: 700; cursor: pointer; }
+    nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; }
+    a { color: var(--gold); text-decoration: none; padding: .5rem .7rem; }
+    a:hover { text-decoration: underline; }
+    footer { margin-top: 3rem; color: #888; font-size: .85rem; }
+    @media (max-width: 480px) { body { padding: 1rem; } form { flex-direction: column; } button { width: 100%; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="bolt" aria-hidden="true">ϟ</div>
+    <h1>BOLT BROWSER</h1>
+    <p>Fast by design. Yours by default.</p>
+    <form action="https://duckduckgo.com/" method="get">
+      <input name="q" type="search" placeholder="Search the web or enter a query" aria-label="Search the web" autofocus>
+      <button type="submit">Search</button>
+    </form>
+    <nav aria-label="Quick links">
+      <a href="https://github.com/BoltGamingOfficial/bolt-os">BOLT OS</a>
+      <a href="https://www.mozilla.org/firefox/">Firefox</a>
+      <a href="https://store.steampowered.com/">Steam</a>
+      <a href="https://www.protondb.com/">ProtonDB</a>
+    </nav>
+    <footer>Powered by Firefox · No BOLT account required</footer>
+  </main>
+</body>
+</html>
