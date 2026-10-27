@@ -32,6 +32,12 @@ if [[ $target != /* ]]; then
   exit 2
 fi
 
+if [[ -e $target ]]; then
+  printf 'This will merge BOLT settings into the existing policy file: %s\n' "$target"
+  printf 'BOLT keys with the same names will replace their existing values.\n'
+  read -r -p 'Create a backup and continue? [y/N] ' answer
+  case "$answer" in y|Y|yes|YES) ;; *) printf 'Cancelled; no changes made.\n'; exit 0 ;; esac
+fi
 python3 - "$template" "$target" <<'PY'
 import json
 import os
