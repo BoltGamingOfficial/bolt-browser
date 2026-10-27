@@ -1,0 +1,4 @@
+*.pkg.tar.*
+*.iso
+*.log
+.DS_Store
