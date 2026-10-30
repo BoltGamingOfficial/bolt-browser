@@ -12,9 +12,7 @@ jobs:
     name: Windows 11 x64
     runs-on: windows-2022
     steps:
-      - name: Check out source
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Install Qt WebEngine
         uses: jurplel/install-qt-action@v4
         with:
@@ -22,7 +20,6 @@ jobs:
           arch: 'win64_msvc2022_64'
           modules: 'qtwebengine qtwebchannel qtpositioning'
           cache: true
-
       - name: Configure
         shell: pwsh
         run: >-
@@ -30,39 +27,28 @@ jobs:
           -G "Visual Studio 17 2022" -A x64
           -DCMAKE_PREFIX_PATH="$env:QT_ROOT_DIR"
           -DBUILD_TESTING=ON
-
       - name: Build
         run: cmake --build build/browser --config Release --parallel 2
-
-      - name: Run tests
+      - name: Test
         run: ctest --test-dir build/browser -C Release --output-on-failure
-
-      - name: Stage Windows deployment
-        shell: pwsh
-        run: cmake --install build/browser --config Release --prefix "$env:GITHUB_WORKSPACE\build\package"
-
-      - name: Check WebEngine deployment files
+      - name: Stage and inspect deployment
         shell: pwsh
         run: |
+          cmake --install build/browser --config Release --prefix "$env:GITHUB_WORKSPACE\build\package"
           $root = Join-Path $env:GITHUB_WORKSPACE 'build\package'
           $files = Get-ChildItem -LiteralPath $root -Recurse -File
-          $required = @('BoltBrowser.exe', 'QtWebEngineProcess.exe', 'qtwebengine_resources.pak')
-          foreach ($name in $required) {
-            if (-not ($files | Where-Object Name -EQ $name)) {
-              throw "Deployment is missing $name"
-            }
+          foreach ($name in @('BoltBrowser.exe', 'QtWebEngineProcess.exe', 'qtwebengine_resources.pak')) {
+            if (-not ($files | Where-Object Name -EQ $name)) { throw "Deployment is missing $name" }
           }
           if (-not ($files | Where-Object { $_.FullName -match '[\\/]platforms[\\/]qwindows\.dll$' })) {
             throw 'Deployment is missing the Qt Windows platform plugin.'
           }
 
-  linux:
-    name: Linux x64
+  ubuntu:
+    name: Ubuntu 24.04 x86_64
     runs-on: ubuntu-24.04
     steps:
-      - name: Check out source
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Install Qt WebEngine
         uses: jurplel/install-qt-action@v4
         with:
@@ -70,24 +56,55 @@ jobs:
           arch: 'linux_gcc_64'
           modules: 'qtwebengine qtwebchannel qtpositioning'
           cache: true
-
       - name: Configure
         run: cmake -S browser -B build/browser -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$QT_ROOT_DIR" -DBUILD_TESTING=ON
-
-      - name: Build
-        run: cmake --build build/browser --parallel 2
-
-      - name: Run tests
-        run: ctest --test-dir build/browser --output-on-failure
-
-      - name: Stage Linux deployment
-        run: cmake --install build/browser --prefix "$GITHUB_WORKSPACE/build/package"
-
-      - name: Check WebEngine deployment files
-        shell: bash
+      - name: Build and test
         run: |
+          cmake --build build/browser --parallel 2
+          ctest --test-dir build/browser --output-on-failure
+      - name: Stage and inspect deployment
+        run: |
+          cmake --install build/browser --prefix "$GITHUB_WORKSPACE/build/package"
           root="$GITHUB_WORKSPACE/build/package"
-          find "$root" -type f -name 'BoltBrowser' -print -quit | grep -q .
-          find "$root" -type f -name 'QtWebEngineProcess' -print -quit | grep -q .
-          find "$root" -type f -name 'qtwebengine_resources.pak' -print -quit | grep -q .
+          find "$root" -type f -name BoltBrowser -print -quit | grep -q .
+          find "$root" -type f -name QtWebEngineProcess -print -quit | grep -q .
+          find "$root" -type f -name qtwebengine_resources.pak -print -quit | grep -q .
           find "$root" -type f -path '*/platforms/libqxcb.so' -print -quit | grep -q .
+
+  arch:
+    name: Arch Linux x86_64
+    runs-on: ubuntu-24.04
+    container: archlinux:base-devel
+    steps:
+      - name: Install system Git and Qt build tools
+        run: pacman -Syu --noconfirm --needed git cmake ninja qt6-base qt6-webengine
+      - uses: actions/checkout@v4
+      - name: Configure, build, and test against Arch Qt
+        run: |
+          cmake -S browser -B build/browser -G Ninja -DCMAKE_BUILD_TYPE=Release -DBOLT_DEPLOY_RUNTIME=OFF -DBUILD_TESTING=ON
+          cmake --build build/browser --parallel 2
+          ctest --test-dir build/browser --output-on-failure
+
+  macos:
+    name: macOS arm64
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Qt WebEngine
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.3'
+          arch: 'clang_64'
+          modules: 'qtwebengine qtwebchannel qtpositioning'
+          cache: true
+      - name: Configure
+        run: cmake -S browser -B build/browser -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$QT_ROOT_DIR" -DBUILD_TESTING=ON
+      - name: Build and test
+        run: |
+          cmake --build build/browser --parallel 2
+          ctest --test-dir build/browser --output-on-failure
+      - name: Stage and inspect app bundle
+        run: |
+          cmake --install build/browser --prefix "$GITHUB_WORKSPACE/build/package"
+          test -d "$GITHUB_WORKSPACE/build/package/BoltBrowser.app"
+          test -f "$GITHUB_WORKSPACE/build/package/BoltBrowser.app/Contents/MacOS/test-page.html"

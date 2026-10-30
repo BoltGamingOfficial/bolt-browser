@@ -25,15 +25,25 @@ target_compile_definitions(BoltBrowser PRIVATE
 if(WIN32)
     set_target_properties(BoltBrowser PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
+if(APPLE)
+    set_target_properties(BoltBrowser PROPERTIES MACOSX_BUNDLE TRUE)
+endif()
 
 configure_file(test-page.html test-page.html COPYONLY)
 
-install(TARGETS BoltBrowser RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(FILES test-page.html DESTINATION ${CMAKE_INSTALL_BINDIR})
+if(APPLE)
+    install(TARGETS BoltBrowser BUNDLE DESTINATION .)
+    install(FILES test-page.html DESTINATION BoltBrowser.app/Contents/MacOS)
+else()
+    install(TARGETS BoltBrowser RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(FILES test-page.html DESTINATION ${CMAKE_INSTALL_BINDIR})
+endif()
 
-qt_generate_deploy_app_script(TARGET BoltBrowser OUTPUT_SCRIPT deploy_script)
-install(SCRIPT ${deploy_script})
+option(BOLT_DEPLOY_RUNTIME "Bundle Qt runtime libraries and WebEngine assets" ON)
+if(BOLT_DEPLOY_RUNTIME)
+    qt_generate_deploy_app_script(TARGET BoltBrowser OUTPUT_SCRIPT deploy_script)
+    install(SCRIPT ${deploy_script})
+endif()
 
 include(CTest)
 if(BUILD_TESTING)
