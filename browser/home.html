@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c0c0e">
+  <title>BOLT — Search without limits</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, "Segoe UI", system-ui, sans-serif;
+      background: #0c0c0e;
+      color: #f5f4f0;
+      --gold: #ffd22e;
+      --muted: #a7a6a2;
+    }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; overflow-x: hidden; background: #0c0c0e; }
+    a { color: inherit; text-decoration: none; }
+    .scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .scene::before, .scene::after { content: ""; position: absolute; border-radius: 50%; filter: blur(2px); }
+    .scene::before { width: 70vw; height: 70vw; min-width: 620px; min-height: 620px; left: 50%; top: -38vw; transform: translateX(-50%); background: radial-gradient(circle, rgba(255,194,25,.17), rgba(255,169,0,.055) 35%, transparent 70%); }
+    .scene::after { width: 54vw; height: 54vw; min-width: 460px; min-height: 460px; left: -26vw; bottom: -38vw; background: radial-gradient(circle, rgba(255,208,45,.075), transparent 68%); }
+    .bolt-field { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .78; }
+    .bolt { fill: #030304; stroke: rgba(255,207,48,.36); stroke-width: 1.4; filter: drop-shadow(0 0 6px rgba(255,196,22,.35)) drop-shadow(0 0 22px rgba(255,180,0,.17)); transform-box: fill-box; transform-origin: center; animation: bolt-drift 13s ease-in-out infinite, bolt-glow 10s ease-in-out infinite; }
+    .bolt:nth-child(2) { animation-delay: -3.4s, -1.6s; }
+    .bolt:nth-child(3) { animation-delay: -6.1s, -4.2s; }
+    @keyframes bolt-drift { 0%,100% { transform: translate3d(0,0,0) rotate(-2deg) scale(.98); } 50% { transform: translate3d(0,-12px,0) rotate(2deg) scale(1.03); } }
+    @keyframes bolt-glow { 0%,100% { opacity: .38; } 50% { opacity: .76; } }
+    .grain { position: absolute; inset: 0; opacity: .055; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E"); }
+    .page { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; padding: 28px clamp(20px, 5vw, 76px) 26px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 19px; font-weight: 760; letter-spacing: .09em; }
+    .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 12px; color: #101010; background: var(--gold); box-shadow: 0 0 28px rgba(255,202,35,.26); font-size: 23px; }
+    .top-link { color: #c8c6bf; font-size: 13px; transition: color .2s ease; }
+    .top-link:hover { color: var(--gold); }
+    main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: min(820px, 100%); margin: -28px auto 0; text-align: center; }
+    .hero-mark { width: 76px; height: 76px; display: grid; place-items: center; margin-bottom: 20px; border-radius: 24px; color: #080808; background: linear-gradient(145deg, #ffe66d, #ffc400 76%); box-shadow: 0 0 60px rgba(255,194,0,.28), inset 0 1px 0 rgba(255,255,255,.55); font-size: 48px; line-height: 1; }
+    h1 { margin: 0; font-size: clamp(36px, 6vw, 58px); line-height: 1.03; letter-spacing: -.055em; font-weight: 760; }
+    h1 span { color: var(--gold); }
+    .tagline { margin: 16px 0 34px; color: #b5b3ad; font-size: clamp(15px, 2vw, 18px); line-height: 1.6; }
+    .search { display: flex; align-items: center; width: min(680px, 100%); min-height: 64px; padding: 7px 9px 7px 22px; border: 1px solid rgba(255,255,255,.11); border-radius: 20px; background: rgba(31,31,34,.92); box-shadow: 0 18px 70px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.035); transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; backdrop-filter: blur(16px); }
+    .search:focus-within { border-color: rgba(255,210,46,.68); box-shadow: 0 0 0 4px rgba(255,210,46,.09), 0 18px 70px rgba(0,0,0,.4); transform: translateY(-1px); }
+    .search-icon { flex: 0 0 auto; color: var(--gold); font-size: 21px; }
+    .search input { flex: 1; width: 100%; min-width: 0; height: 46px; padding: 0 14px; border: 0; outline: 0; color: #f7f5ef; background: transparent; font: inherit; font-size: 16px; }
+    .search input::placeholder { color: #97959a; }
+    .search button { width: 46px; height: 46px; flex: 0 0 auto; border: 0; border-radius: 14px; color: #12110b; background: var(--gold); font-size: 22px; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+    .search button:hover { transform: translateX(2px); background: #ffe16b; }
+    .hint { display: flex; align-items: center; gap: 6px; margin-top: 13px; color: #77767a; font-size: 12px; }
+    kbd { padding: 3px 7px; border: 1px solid #39383b; border-radius: 6px; color: #b9b7b2; background: #19191b; font: inherit; }
+    .sources { width: min(680px, 100%); margin-top: 58px; text-align: left; }
+    .sources-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; color: #aaa8a3; font-size: 12px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+    .source-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .source { min-height: 74px; display: flex; align-items: center; gap: 11px; padding: 12px; border: 1px solid rgba(255,255,255,.075); border-radius: 15px; color: #e6e3dc; background: rgba(24,24,26,.78); transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+    .source:hover { transform: translateY(-3px); border-color: rgba(255,210,46,.4); background: rgba(37,35,28,.92); }
+    .source-icon { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border-radius: 11px; color: var(--gold); background: rgba(255,210,46,.1); font-size: 16px; font-weight: 750; }
+    .source-label { font-size: 12px; font-weight: 620; }
+    footer { display: flex; justify-content: center; padding-top: 30px; color: #66656a; font-size: 11px; letter-spacing: .03em; }
+    @media (max-width: 620px) { .page { padding: 19px 17px 20px; } .brand { font-size: 16px; } .brand-mark { width: 34px; height: 34px; } main { margin: -12px auto 0; } .hero-mark { width: 64px; height: 64px; border-radius: 20px; font-size: 40px; } .sources { margin-top: 42px; } .source-grid { grid-template-columns: repeat(2, 1fr); } .source { min-height: 66px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <svg class="bolt-field" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <path class="bolt" d="M229 98 176 217h58l-31 111 104-147h-65l39-83z"/>
+      <path class="bolt" d="m1210 132-38 91h43l-23 91 81-119h-49l28-63z"/>
+      <path class="bolt" d="m1110 638-54 115h57l-33 110 105-151h-65l39-74z"/>
+    </svg>
+    <div class="grain"></div>
+  </div>
+  <div class="page">
+    <header>
+      <a class="brand" href="#home" aria-label="BOLT Browser home"><span class="brand-mark" aria-hidden="true">ϟ</span><span>BOLT</span></a>
+      <a class="top-link" href="https://github.com/BoltGamingOfficial/bolt-browser">About BOLT <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="home">
+      <div class="hero-mark" aria-hidden="true">ϟ</div>
+      <h1>Move at the speed<br>of <span>thought.</span></h1>
+      <p class="tagline">One search away from the open web and the sources worth finding.</p>
+      <form class="search" action="https://duckduckgo.com/" method="get" role="search">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="search" type="search" name="q" placeholder="Search or enter a web address" autocomplete="off" aria-label="Search the web or enter a web address">
+        <button type="submit" aria-label="Search">↗</button>
+      </form>
+      <div class="hint"><kbd>/</kbd> to focus search <span aria-hidden="true">·</span> Search privately with DuckDuckGo</div>
+      <section class="sources" aria-labelledby="sources-title">
+        <div class="sources-heading"><span id="sources-title">Research starting points</span><span aria-hidden="true">✳</span></div>
+        <div class="source-grid">
+          <a class="source" href="https://scholar.google.com/"><span class="source-icon" aria-hidden="true">S</span><span class="source-label">Scholar</span></a>
+          <a class="source" href="https://pubmed.ncbi.nlm.nih.gov/"><span class="source-icon" aria-hidden="true">P</span><span class="source-label">PubMed</span></a>
+          <a class="source" href="https://archive.org/"><span class="source-icon" aria-hidden="true">A</span><span class="source-label">Internet Archive</span></a>
+          <a class="source" href="https://www.loc.gov/"><span class="source-icon" aria-hidden="true">L</span><span class="source-label">Library of Congress</span></a>
+        </div>
+      </section>
+    </main>
+    <footer>BOLT Browser <span aria-hidden="true">&nbsp;·&nbsp;</span> Research starts here</footer>
+  </div>
+  <script>
+    const search = document.getElementById('search');
+    document.addEventListener('keydown', event => {
+      if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && document.activeElement !== search) {
+        event.preventDefault();
+        search.focus();
+      }
+    });
+  </script>
+</body>
+</html>

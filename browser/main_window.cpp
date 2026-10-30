@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     auto *toolbar = new QHBoxLayout;
     toolbar->setSpacing(6);
 
-    auto *brand = new QPushButton(QStringLiteral("⚡  BOLT"), central);
+    auto *brand = new QPushButton(QStringLiteral("ϟ  BOLT"), central);
     brand->setObjectName(QStringLiteral("boltBrand"));
     brand->setToolTip(QStringLiteral("BOLT Browser — open the local test page"));
     brand->setCursor(Qt::PointingHandCursor);
@@ -109,15 +109,17 @@ MainWindow::MainWindow(QWidget *parent)
     setStyleSheet(QStringLiteral(R"(
         QMainWindow, QWidget#boltBrowserWindow { background: %1; color: #f5f5f5; }
         QWidget { color: #f5f5f5; font-family: "Segoe UI", "Noto Sans", sans-serif; font-size: 10pt; }
-        QPushButton#boltBrand { background: %2; color: %3; border: 1px solid #363a43; border-radius: 9px; padding: 0 13px; font-weight: 700; }
-        QToolButton { background: %2; color: #e5e7eb; border: 1px solid #30343d; border-radius: 9px; font-size: 17pt; }
-        QToolButton:hover, QPushButton#boltBrand:hover { border-color: %3; color: %3; }
-        QToolButton:disabled { color: #5c626e; }
-        QLineEdit#addressBar { background: %2; border: 1px solid #30343d; border-radius: 10px; padding: 0 13px; selection-background-color: %3; }
-        QLineEdit#addressBar:focus { border: 1px solid %3; }
+        QPushButton#boltBrand { background: qlineargradient(x1:0,y1:0,x2:1,y2:1,stop:0 #2b2922,stop:1 %2); color: %3; border: 1px solid #51462a; border-radius: 12px; padding: 0 16px; font-weight: 750; letter-spacing: 1px; }
+        QToolButton { background: %2; color: #d9d7d0; border: 1px solid #303036; border-radius: 12px; font-size: 17pt; }
+        QToolButton:hover, QPushButton#boltBrand:hover { background: #29271f; border-color: %3; color: %3; }
+        QToolButton:pressed, QPushButton#boltBrand:pressed { background: #38311a; }
+        QToolButton:disabled { color: #5c5b60; background: #151517; }
+        QLineEdit#addressBar { background: #1a1a1d; border: 1px solid #34343a; border-radius: 15px; padding: 0 16px; selection-background-color: %3; }
+        QLineEdit#addressBar:hover { border-color: #55504a; }
+        QLineEdit#addressBar:focus { border: 1px solid %3; background: #202023; }
         QProgressBar { background: %2; border: 0; }
         QProgressBar::chunk { background: %3; }
-        QStatusBar { background: %1; color: %4; }
+        QStatusBar { background: %1; color: %4; border-top: 1px solid #242428; }
     )").arg(QString::fromLatin1(kDark), QString::fromLatin1(kPanel),
             QString::fromLatin1(kGold), QString::fromLatin1(kMuted)));
 
@@ -211,5 +213,5 @@ void MainWindow::setNavigationStatus(const QString &message)
 QUrl homeUrl()
 {
     return QUrl::fromLocalFile(QCoreApplication::applicationDirPath()
-                               + QStringLiteral("/test-page.html"));
+                               + QStringLiteral("/home.html"));
 }

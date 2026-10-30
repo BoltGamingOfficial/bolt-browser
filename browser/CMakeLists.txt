@@ -29,14 +29,14 @@ if(APPLE)
     set_target_properties(BoltBrowser PROPERTIES MACOSX_BUNDLE TRUE)
 endif()
 
-configure_file(test-page.html test-page.html COPYONLY)
+configure_file(home.html home.html COPYONLY)
 
 if(APPLE)
     install(TARGETS BoltBrowser BUNDLE DESTINATION .)
-    install(FILES test-page.html DESTINATION BoltBrowser.app/Contents/MacOS)
+    install(FILES home.html DESTINATION BoltBrowser.app/Contents/MacOS)
 else()
     install(TARGETS BoltBrowser RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-    install(FILES test-page.html DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(FILES home.html DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 option(BOLT_DEPLOY_RUNTIME "Bundle Qt runtime libraries and WebEngine assets" ON)

@@ -107,4 +107,4 @@ jobs:
         run: |
           cmake --install build/browser --prefix "$GITHUB_WORKSPACE/build/package"
           test -d "$GITHUB_WORKSPACE/build/package/BoltBrowser.app"
-          test -f "$GITHUB_WORKSPACE/build/package/BoltBrowser.app/Contents/MacOS/test-page.html"
+          test -f "$GITHUB_WORKSPACE/build/package/BoltBrowser.app/Contents/MacOS/home.html"

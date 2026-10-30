@@ -1,6 +1,6 @@
 # Standalone BOLT Browser
 
-This directory builds BOLT as a separate native desktop application using Qt Widgets and Qt WebEngine (Chromium). The app does not invoke Firefox or modify a Firefox profile. Its current foundation includes one browser window, address/search resolution, back/forward/reload/home, loading feedback, explicit certificate rejection, an app-owned persistent profile, and a bundled offline page. The UI starts the dark-and-gold BOLT visual direction.
+This directory builds BOLT as a separate native desktop application using Qt Widgets and Qt WebEngine (Chromium). The app does not invoke Firefox or modify a Firefox profile. Its current foundation includes one browser window, address/search resolution, back/forward/reload/home, loading feedback, explicit certificate rejection, an app-owned persistent profile, and a bundled offline home screen. The home screen combines BOLT's gold-and-black identity, a prominent DuckDuckGo search field, slow-glowing black lightning, and direct links to public research sources. Animation honors the operating system's reduced-motion preference.
 
 ## Build and CI targets
 
