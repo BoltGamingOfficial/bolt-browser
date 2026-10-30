@@ -6,7 +6,7 @@ This is an early browser foundation, not a finished research suite. It does not 
 
 ## Build targets
 
-The intended desktop targets are Windows x64, Linux x86_64 (including Ubuntu and Arch Linux), and macOS x86_64. GitHub Actions builds and runs the address resolver tests on Windows 11 x64, Ubuntu 24.04 x86_64, Arch Linux x86_64, and macOS x86_64. Apple Silicon remains unverified. These are compile/test targets; they do not prove GUI launch, website compatibility, or portable deployment on every distribution or OS release. Consult `browser/README.md` for exact verification limits.
+The intended desktop targets are Windows x64, Linux x86_64 (including Ubuntu and Arch Linux), and macOS x86_64. GitHub Actions builds and runs the address resolver tests on a Windows Server 2022 x64 runner with Visual Studio 2022, Ubuntu 24.04 x86_64, Arch Linux x86_64, and macOS x86_64. Apple Silicon remains unverified. The Windows server build does not replace a Windows 10/11 desktop launch. These are compile/test targets; they do not prove GUI launch, website compatibility, or portable deployment on every distribution or OS release. Consult `browser/README.md` for exact verification limits.
 
 Qt WebEngine embeds Chromium. BOLT will need regular Qt WebEngine security updates and rebuilt releases. No custom browser engine is planned; maintaining a Chromium or Firefox fork would make security maintenance and cross-platform delivery far less practical for this project.
 

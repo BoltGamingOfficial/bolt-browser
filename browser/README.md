@@ -4,7 +4,7 @@ This directory builds BOLT as a separate native desktop application using Qt Wid
 
 ## Build and CI targets
 
-The intended targets are Windows x64, Linux x86_64, and macOS x86_64. CI build/test targets are Windows 11 x64, Ubuntu 24.04 x86_64, Arch Linux x86_64, and macOS x86_64. Apple Silicon remains unverified. CI builds and runs CTest and inspects staged WebEngine files where the platform deployment tools support it. A passing CI build does not demonstrate a graphical launch, real-site navigation, certificate rejection at runtime, or a clean-machine install. OS versions and distributions outside those runners remain unverified.
+The intended targets are Windows x64, Linux x86_64, and macOS x86_64. CI build/test targets are Windows Server 2022 x64 with Visual Studio 2022, Ubuntu 24.04 x86_64, Arch Linux x86_64, and macOS x86_64. Apple Silicon remains unverified. CI builds and runs CTest and inspects staged WebEngine files where the platform deployment tools support it. A Windows Server build does not replace a Windows 10/11 desktop test. A passing CI build does not demonstrate a graphical launch, real-site navigation, certificate rejection at runtime, or a clean-machine install. OS versions and distributions outside those runners remain unverified.
 
 Requirements: CMake 3.21+, C++17, and Qt 6.8+ with Qt WebEngine Widgets. CI currently uses Qt 6.10.3 because the selected Qt installer action could not retrieve Qt 6.11 packages from the revised Qt repository layout. This is a validated CI version, not a claim that it is the newest Qt release.
 
