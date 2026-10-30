@@ -3,6 +3,8 @@
 
 #include <QCoreApplication>
 #include <QDir>
+#include <QFileDialog>
+#include <QFileInfo>
 #include <QHBoxLayout>
 #include <QKeySequence>
 #include <QLineEdit>
@@ -17,6 +19,7 @@
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWebEngineCertificateError>
+#include <QWebEngineDownloadRequest>
 #include <QWebEngineHistory>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
@@ -146,6 +149,33 @@ MainWindow::MainWindow(QWidget *parent)
     profile_->setCachePath(dataDir + QStringLiteral("/cache"));
     profile_->setHttpCacheType(QWebEngineProfile::DiskHttpCache);
     profile_->setPersistentCookiesPolicy(QWebEngineProfile::AllowPersistentCookies);
+    connect(profile_, &QWebEngineProfile::downloadRequested, this,
+            [this](QWebEngineDownloadRequest *download) {
+                const QString downloads = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+                const QString suggested = QDir(downloads).filePath(download->suggestedFileName());
+                const QString destination = QFileDialog::getSaveFileName(
+                    this, QStringLiteral("Save download"), suggested);
+                if (destination.isEmpty()) {
+                    download->cancel();
+                    setNavigationStatus(QStringLiteral("Download cancelled."));
+                    return;
+                }
+                const QFileInfo file(destination);
+                download->setDownloadDirectory(file.absolutePath());
+                download->setDownloadFileName(file.fileName());
+                connect(download, &QWebEngineDownloadRequest::stateChanged, this,
+                        [this, download](QWebEngineDownloadRequest::DownloadState state) {
+                            if (state == QWebEngineDownloadRequest::DownloadCompleted)
+                                setNavigationStatus(QStringLiteral("Download saved: %1")
+                                                       .arg(download->downloadFileName()));
+                            else if (state == QWebEngineDownloadRequest::DownloadInterrupted)
+                                setNavigationStatus(QStringLiteral("Download interrupted: %1")
+                                                       .arg(download->interruptReasonString()));
+                        });
+                download->accept();
+                setNavigationStatus(QStringLiteral("Downloading %1…")
+                                        .arg(download->downloadFileName()));
+            });
 
     connect(brand, &QPushButton::clicked, this, [this] {
         if (auto *view = activeView()) view->setUrl(homeUrl());
