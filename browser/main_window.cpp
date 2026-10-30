@@ -164,7 +164,7 @@ MainWindow::MainWindow(QWidget *parent)
         forwardButton_->setEnabled(view_->history()->canGoForward());
     });
     connect(page, &QWebEnginePage::certificateError, this,
-            [this](const QWebEngineCertificateError &error) {
+            [this](QWebEngineCertificateError error) {
                 error.rejectCertificate();
                 certificateRejected_ = true;
                 setNavigationStatus(QStringLiteral("Blocked invalid HTTPS certificate: %1")
