@@ -2,7 +2,7 @@
 
 This directory builds a separate native desktop application with Qt Widgets and Qt WebEngine. The content view is an embedded Chromium-based engine. The application does not invoke Firefox, modify Firefox policies, or reuse a Firefox profile.
 
-Windows is the first install target. GitHub Actions checks the standalone source on Windows 11 x64 and Ubuntu 24.04 using Qt WebEngine 6.11.3; it builds, runs the address resolver tests, stages each deployment, and checks for key WebEngine files. These CI checks have not yet completed for this branch, and they do not replace a clean-machine launch or real-site test. macOS and other operating systems are not currently claimed as supported. No finished installer or release package is available yet.
+Windows is the first install target. GitHub Actions checks the standalone source on Windows 11 x64 and Ubuntu 24.04 using Qt WebEngine 6.10.3; it builds, runs the address resolver tests, stages each deployment, and checks for key WebEngine files. These CI checks have not yet completed for this branch, and they do not replace a clean-machine launch or real-site test. macOS and other operating systems are not currently claimed as supported. No finished installer or release package is available yet.
 
 The current scope is deliberately small: one window, one page, address/search entry, back/forward/reload/home, loading feedback, basic failure feedback, keyboard shortcuts, a fresh BOLT-owned persistent profile, and a bundled offline test page. There is no tab system, download manager, extension support, sync, custom tracking protection, or settings framework.
 

@@ -18,9 +18,9 @@ jobs:
       - name: Install Qt WebEngine
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.11.3'
+          version: '6.10.3'
           arch: 'win64_msvc2022_64'
-          modules: 'qtwebengine qtwebchannel qttasktree'
+          modules: 'qtwebengine qtwebchannel qtpositioning'
           cache: true
 
       - name: Configure
@@ -66,9 +66,9 @@ jobs:
       - name: Install Qt WebEngine
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.11.3'
+          version: '6.10.3'
           arch: 'linux_gcc_64'
-          modules: 'qtwebengine qtwebchannel qttasktree'
+          modules: 'qtwebengine qtwebchannel qtpositioning'
           cache: true
 
       - name: Configure
