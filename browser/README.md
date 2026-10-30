@@ -4,7 +4,7 @@ This directory builds BOLT as a separate native desktop application using Qt Wid
 
 ## Build and CI targets
 
-The intended targets are Windows x64, Linux x86_64, and macOS. CI build/test targets are Windows 11 x64, Ubuntu 24.04 x86_64, Arch Linux x86_64, and macOS. CI builds and runs CTest and inspects staged WebEngine files where the platform deployment tools support it. A passing CI build does not demonstrate a graphical launch, real-site navigation, certificate rejection at runtime, or a clean-machine install. OS versions and distributions outside those runners remain unverified.
+The intended targets are Windows x64, Linux x86_64, and macOS x86_64. CI build/test targets are Windows 11 x64, Ubuntu 24.04 x86_64, Arch Linux x86_64, and macOS x86_64. Apple Silicon remains unverified. CI builds and runs CTest and inspects staged WebEngine files where the platform deployment tools support it. A passing CI build does not demonstrate a graphical launch, real-site navigation, certificate rejection at runtime, or a clean-machine install. OS versions and distributions outside those runners remain unverified.
 
 Requirements: CMake 3.21+, C++17, and Qt 6.8+ with Qt WebEngine Widgets. CI currently uses Qt 6.10.3 because the selected Qt installer action could not retrieve Qt 6.11 packages from the revised Qt repository layout. This is a validated CI version, not a claim that it is the newest Qt release.
 
@@ -38,9 +38,9 @@ cmake --install build/browser --prefix build/browser/package
 
 CI uses Arch Linux's `qt6-base` and `qt6-webengine` packages and builds/tests against the distribution Qt. A successful Arch CI run verifies compilation and address resolver tests on that runner; it is not an AUR package or a tested portable bundle. The generated install tree uses system Qt (`-DBOLT_DEPLOY_RUNTIME=OFF`); install runtime dependencies through the system package manager.
 
-### macOS
+### macOS x86_64
 
-CI uses a Qt `clang_64` WebEngine kit, builds the app bundle, and runs CTest. This is a build target only until GUI launch and clean-machine deployment are exercised on macOS. The generated app bundle is staged by CMake; do not distribute it until Qt deployment contents, signing/notarization needs, and runtime launch are validated.
+CI uses a Qt `clang_64` WebEngine kit, builds the app bundle, and runs CTest on an Intel macOS runner. This is a build target only until GUI launch and clean-machine deployment are exercised. Apple Silicon has not been tested. The generated app bundle is staged by CMake; do not distribute it until Qt deployment contents, signing/notarization needs, and runtime launch are validated.
 
 ## Tests and manual validation
 
