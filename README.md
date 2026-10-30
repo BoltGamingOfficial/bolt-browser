@@ -1,8 +1,8 @@
 # BOLT Browser
 
-BOLT Browser is a standalone desktop browser built with Qt WebEngine (Chromium). The current application is a small, single-window foundation with an address/search bar, basic navigation, persistent BOLT-owned profile, certificate rejection, and an offline BOLT home screen with a large search field, research shortcuts, and gently animated lightning. Its visual direction uses a dark canvas with gold light and black bolt forms.
+BOLT Browser is a standalone desktop browser built with Qt WebEngine (Chromium). The current application has closable, reorderable tabs, an address/search bar, basic navigation, a persistent BOLT-owned profile, certificate rejection, and an offline BOLT home screen with a large search field, research shortcuts, and gently animated lightning. Its visual direction uses a dark canvas with gold light and black bolt forms.
 
-This is an early browser foundation, not a finished research suite. It does not yet provide tabs, downloads, extension support, private mode, site-data controls, sync, or specialized research-source integrations. “Deep web” research means helping users reach lawful, non-indexed resources such as library databases, archives, and authenticated sites; it does not bypass access controls or provide anonymity. Tor and onion routing are not implemented.
+This is an early browser foundation, not a finished research suite. It does not yet provide downloads, extension support, private mode, site-data controls, sync, or specialized research-source integrations. Tabs currently share persistent profile data and are not automatically suspended to save memory. “Deep web” research means helping users reach lawful, non-indexed resources such as library databases, archives, and authenticated sites; it does not bypass access controls or provide anonymity. Tor and onion routing are not implemented.
 
 ## Build targets
 

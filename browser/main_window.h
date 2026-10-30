@@ -4,6 +4,7 @@
 
 class QLineEdit;
 class QProgressBar;
+class QTabWidget;
 class QToolButton;
 class QUrl;
 class QWebEngineProfile;
@@ -21,13 +22,16 @@ public:
 private:
     void navigateFromAddressBar();
     void setNavigationStatus(const QString &message);
+    void addTab(const QUrl &url);
+    void closeTab(int index);
+    void syncActiveTab();
+    QWebEngineView *activeView() const;
 
     QWebEngineProfile *profile_ = nullptr;
-    QWebEngineView *view_ = nullptr;
+    QTabWidget *tabs_ = nullptr;
     QLineEdit *addressBar_ = nullptr;
     QProgressBar *progressBar_ = nullptr;
     QToolButton *backButton_ = nullptr;
     QToolButton *forwardButton_ = nullptr;
     QToolButton *reloadButton_ = nullptr;
-    bool certificateRejected_ = false;
 };
