@@ -11,11 +11,8 @@ jobs:
   static-checks:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-      - name: Validate Firefox policy JSON
-        run: python3 -m json.tool firefox/policies.json >/dev/null
-      - name: Validate browser prototype and package layout
+      - uses: actions/checkout@v4
+      - name: Validate standalone browser structure
         run: bash tests/check-browser.sh
       - name: Check shell syntax
-        run: bash -n tests/check-browser.sh packaging/enable-firefox-policy.sh PKGBUILD
+        run: bash -n tests/check-browser.sh
