@@ -20,7 +20,7 @@ jobs:
         with:
           version: '6.11.3'
           arch: 'win64_msvc2022_64'
-          modules: 'qtwebengine'
+          modules: 'qtwebengine qtwebchannel qttasktree'
           cache: true
 
       - name: Configure
@@ -68,7 +68,7 @@ jobs:
         with:
           version: '6.11.3'
           arch: 'linux_gcc_64'
-          modules: 'qtwebengine'
+          modules: 'qtwebengine qtwebchannel qttasktree'
           cache: true
 
       - name: Configure
