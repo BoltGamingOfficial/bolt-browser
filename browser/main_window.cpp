@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     auto *toolbar = new QHBoxLayout;
     toolbar->setSpacing(6);
 
-    auto *brand = new QPushButton(QStringLiteral("ϟ  BOLT"), central);
+    auto *brand = new QPushButton(QStringLiteral("⚡  BOLT"), central);
     brand->setObjectName(QStringLiteral("boltBrand"));
     brand->setToolTip(QStringLiteral("BOLT Browser — open the local test page"));
     brand->setCursor(Qt::PointingHandCursor);

@@ -32,10 +32,12 @@
     header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
     .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 19px; font-weight: 760; letter-spacing: .09em; }
     .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 12px; color: #101010; background: var(--gold); box-shadow: 0 0 28px rgba(255,202,35,.26); font-size: 23px; }
+    .brand-mark svg { width: 20px; height: 25px; fill: currentColor; }
     .top-link { color: #c8c6bf; font-size: 13px; transition: color .2s ease; }
     .top-link:hover { color: var(--gold); }
     main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: min(820px, 100%); margin: -28px auto 0; text-align: center; }
     .hero-mark { width: 76px; height: 76px; display: grid; place-items: center; margin-bottom: 20px; border-radius: 24px; color: #080808; background: linear-gradient(145deg, #ffe66d, #ffc400 76%); box-shadow: 0 0 60px rgba(255,194,0,.28), inset 0 1px 0 rgba(255,255,255,.55); font-size: 48px; line-height: 1; }
+    .hero-mark svg { width: 39px; height: 48px; fill: currentColor; }
     h1 { margin: 0; font-size: clamp(36px, 6vw, 58px); line-height: 1.03; letter-spacing: -.055em; font-weight: 760; }
     h1 span { color: var(--gold); }
     .tagline { margin: 16px 0 34px; color: #b5b3ad; font-size: clamp(15px, 2vw, 18px); line-height: 1.6; }
@@ -71,11 +73,11 @@
   </div>
   <div class="page">
     <header>
-      <a class="brand" href="#home" aria-label="BOLT Browser home"><span class="brand-mark" aria-hidden="true">ϟ</span><span>BOLT</span></a>
+      <a class="brand" href="#home" aria-label="BOLT Browser home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 40"><path d="M19 1 4 22h10l-2 17L29 14H18l3-13Z"/></svg></span><span>BOLT</span></a>
       <a class="top-link" href="https://github.com/BoltGamingOfficial/bolt-browser">About BOLT <span aria-hidden="true">↗</span></a>
     </header>
     <main id="home">
-      <div class="hero-mark" aria-hidden="true">ϟ</div>
+      <div class="hero-mark" aria-hidden="true"><svg viewBox="0 0 32 40"><path d="M19 1 4 22h10l-2 17L29 14H18l3-13Z"/></svg></div>
       <h1>Move at the speed<br>of <span>thought.</span></h1>
       <p class="tagline">One search away from the open web and the sources worth finding.</p>
       <form class="search" action="https://duckduckgo.com/" method="get" role="search">
