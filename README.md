@@ -23,6 +23,16 @@ For the current development phase, Windows users can test the start page using t
 - Arch PKGBUILD that installs the start page, an example policy file, and an opt-in policy merge helper.
 - Offline static checks and a GitHub Actions quality workflow.
 
+## Standalone browser proof of concept
+
+`browser/` contains source for a native BOLT Browser application shell using Qt WebEngine. The code is designed to use its own window and profile with an embedded Chromium-based view, without launching Firefox. The existing Firefox customization and packaging remain intact. The native application has not built or run in this environment, so its engine integration, packaging, and cross-platform behavior remain unverified.
+
+Build requirements, launch steps, the offline page, security behavior, and verification status are documented in [`browser/README.md`](browser/README.md). The source uses Qt WebEngine 6.8 or newer and keeps TLS certificate errors rejected by default and in the application handler.
+
+The first standalone target is Windows, with Linux builds checked alongside it. macOS and other platforms are not currently claimed as supported. GitHub Actions builds and tests the native application on Windows and Linux; that validates compilation and unit tests, not a clean-machine install or full website runtime behavior. No finished installer or release is available yet.
+
+The product direction is a lightweight, gold-and-black browser with a restrained dark interface. Longer term, BOLT aims to help users research beyond ordinary search results through explicit source connectors while keeping discovery on-demand. Search connectors, low-memory behavior, and support for non-indexed databases are planned, not implemented. Access to private or login-protected material will continue to require the user's own authorization.
+
 ## Repository layout
 - `startpage/index.html` — static local start page.
 - `firefox/policies.json` — Firefox enterprise policy template for Linux packaging.
@@ -74,5 +84,6 @@ The repository CI validates source structure and shell syntax. These checks do n
 3. **0.3 — Windows smoke test:** launch the start page in Firefox without modifying the user's profile.
 4. **0.4 — Runtime validation:** build the package on Arch, test Firefox `about:policies`, private windows, extensions, logins, downloads, video, and common gaming websites.
 5. **0.5 — Performance baseline:** record startup time, idle RAM/CPU, and multi-tab behavior under documented conditions before tuning defaults.
+6. **Standalone foundation (prototype, not runtime-verified):** Qt WebEngine one-window app source and offline page. Windows/Linux build and unit-test CI is being established; clean-machine packaging, TLS behavior, website runtime, and performance still need verification.
 
 Do not treat performance, privacy, or compatibility as verified until measured with documented test conditions.

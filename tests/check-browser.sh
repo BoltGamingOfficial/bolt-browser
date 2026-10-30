@@ -7,7 +7,11 @@ PKGBUILD="$ROOT_DIR/PKGBUILD"
 POLICY_HELPER="$ROOT_DIR/packaging/enable-firefox-policy.sh"
 WINDOWS_LAUNCHER="$ROOT_DIR/windows/launch-bolt-browser.ps1"
 WINDOWS_README="$ROOT_DIR/windows/README.md"
-for file in "$POLICIES" "$STARTPAGE" "$PKGBUILD" "$POLICY_HELPER" "$WINDOWS_LAUNCHER" "$WINDOWS_README"; do
+BROWSER_DIR="$ROOT_DIR/browser"
+for file in "$POLICIES" "$STARTPAGE" "$PKGBUILD" "$POLICY_HELPER" "$WINDOWS_LAUNCHER" "$WINDOWS_README" \
+  "$BROWSER_DIR/CMakeLists.txt" "$BROWSER_DIR/main.cpp" "$BROWSER_DIR/main_window.cpp" \
+  "$BROWSER_DIR/main_window.h" "$BROWSER_DIR/address_resolver.cpp" "$BROWSER_DIR/address_resolver.h" \
+  "$BROWSER_DIR/tests/address_resolver_test.cpp" "$BROWSER_DIR/test-page.html" "$BROWSER_DIR/README.md"; do
   if [[ ! -s "$file" ]]; then printf 'Missing or empty BOLT Browser file: %s\n' "$file" >&2; exit 1; fi
 done
 python3 - "$POLICIES" "$PKGBUILD" <<'PY'
@@ -34,5 +38,17 @@ grep -Fq 'https://store.steampowered.com/' "$STARTPAGE"
 grep -Fq 'Merge BOLT Browser policies into a Firefox policies file after confirmation.' "$POLICY_HELPER"
 grep -Fq 'Start-Process -FilePath $firefox' "$WINDOWS_LAUNCHER"
 grep -Fq 'does not' "$WINDOWS_README"
+grep -Fq 'Qt6::WebEngineWidgets' "$BROWSER_DIR/CMakeLists.txt"
+grep -Fq 'BOLT Browser is running' "$BROWSER_DIR/test-page.html"
+grep -Fq 'error.rejectCertificate();' "$BROWSER_DIR/main_window.cpp"
+grep -Fq 'setPersistentStoragePath' "$BROWSER_DIR/main_window.cpp"
+grep -Fq 'qt_generate_deploy_app_script' "$BROWSER_DIR/CMakeLists.txt"
+grep -Fq 'localhost:3000' "$BROWSER_DIR/tests/address_resolver_test.cpp"
+grep -Fq '2001:db8::1' "$BROWSER_DIR/tests/address_resolver_test.cpp"
+grep -Fq 'certificateRejected_' "$BROWSER_DIR/main_window.cpp"
+if grep -REn 'acceptCertificate|ignoreCertificateErrors|QTWEBENGINE_DISABLE_SANDBOX|--no-sandbox' "$BROWSER_DIR" --exclude=README.md; then
+  printf 'Unsafe WebEngine TLS or sandbox override found.\n' >&2
+  exit 1
+fi
 bash -n "$POLICY_HELPER"
 printf 'BOLT Browser static checks passed.\n'
